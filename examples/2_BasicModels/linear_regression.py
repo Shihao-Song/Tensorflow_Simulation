@@ -76,10 +76,10 @@ with tf.Session() as sess:
     print("Training cost=", training_cost, "W=", sess.run(W), "b=", sess.run(b), '\n')
 
     # Graphic display
-    plt.plot(train_X, train_Y, 'ro', label='Original data')
-    plt.plot(train_X, sess.run(W) * train_X + sess.run(b), label='Fitted line')
-    plt.legend()
-    plt.show()
+    # plt.plot(train_X, train_Y, 'ro', label='Original data')
+    # plt.plot(train_X, sess.run(W) * train_X + sess.run(b), label='Fitted line')
+    # plt.legend()
+    # plt.show()
 
     # Testing example, as requested (Issue #2)
     test_X = numpy.asarray([6.83, 4.668, 8.9, 7.91, 5.7, 8.7, 3.1, 2.1])
@@ -93,7 +93,7 @@ with tf.Session() as sess:
     print("Absolute mean square loss difference:", abs(
         training_cost - testing_cost))
 
-    plt.plot(test_X, test_Y, 'bo', label='Testing data')
-    plt.plot(train_X, sess.run(W) * train_X + sess.run(b), label='Fitted line')
-    plt.legend()
-    plt.show()
+    # plt.plot(test_X, test_Y, 'bo', label='Testing data')
+    # plt.plot(train_X, sess.run(W) * train_X + sess.run(b), label='Fitted line')
+    # plt.legend()
+    # plt.show()
