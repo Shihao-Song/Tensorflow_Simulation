@@ -16,6 +16,14 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 """
 from __future__ import division, print_function, absolute_import
 
+# Disable GPU (we focus on the CPU side simulation)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Import our simulation hooks.
+from ROI import roi_begin as roi_begin
+from ROI import roi_end as roi_end
+
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -97,6 +105,7 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
+    roi_begin()
     # Training
     for i in range(1, num_steps+1):
         # Prepare Data
@@ -108,6 +117,7 @@ with tf.Session() as sess:
         # Display logs per step
         if i % display_step == 0 or i == 1:
             print('Step %i: Minibatch Loss: %f' % (i, l))
+    roi_end()
 
     # Testing
     # Encode and decode images from test set and visualize their reconstruction.

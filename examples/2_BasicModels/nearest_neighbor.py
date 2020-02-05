@@ -9,6 +9,14 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 
 from __future__ import print_function
 
+# Disable GPU (we focus on the CPU side simulation)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Import our simulation hooks.
+from ROI import roi_begin as roi_begin
+from ROI import roi_end as roi_end
+
 import numpy as np
 import tensorflow as tf
 
@@ -40,7 +48,7 @@ with tf.Session() as sess:
 
     # Run the initializer
     sess.run(init)
-
+    roi_begin()
     # loop over test data
     for i in range(len(Xte)):
         # Get nearest neighbor
@@ -51,5 +59,6 @@ with tf.Session() as sess:
         # Calculate accuracy
         if np.argmax(Ytr[nn_index]) == np.argmax(Yte[i]):
             accuracy += 1./len(Xte)
+    roi_end()
     print("Done!")
     print("Accuracy:", accuracy)

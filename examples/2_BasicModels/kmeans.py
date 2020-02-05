@@ -12,6 +12,14 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 
 from __future__ import print_function
 
+# Disable GPU (we focus on the CPU side simulation)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Import our simulation hooks.
+from ROI import roi_begin as roi_begin
+from ROI import roi_end as roi_end
+
 import numpy as np
 import tensorflow as tf
 from tensorflow.contrib.factorization import KMeans
@@ -64,12 +72,14 @@ sess = tf.Session()
 sess.run(init_vars, feed_dict={X: full_data_x})
 sess.run(init_op, feed_dict={X: full_data_x})
 
+roi_begin()
 # Training
 for i in range(1, num_steps + 1):
     _, d, idx = sess.run([train_op, avg_distance, cluster_idx],
                          feed_dict={X: full_data_x})
     if i % 10 == 0 or i == 1:
         print("Step %i, Avg Distance: %f" % (i, d))
+roi_end()
 
 # Assign a label to each centroid
 # Count total number of labels per centroid, using the label of each training

@@ -9,6 +9,14 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 
 from __future__ import print_function
 
+# Disable GPU (we focus on the CPU side simulation)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Import our simulation hooks.
+from ROI import roi_begin as roi_begin
+from ROI import roi_end as roi_end
+
 import tensorflow as tf
 
 # Import MNIST data
@@ -46,6 +54,7 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
+    roi_begin()
     # Training cycle
     for epoch in range(training_epochs):
         avg_cost = 0.
@@ -61,6 +70,7 @@ with tf.Session() as sess:
         # Display logs per epoch step
         if (epoch+1) % display_step == 0:
             print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
+    roi_end()
 
     print("Optimization Finished!")
 

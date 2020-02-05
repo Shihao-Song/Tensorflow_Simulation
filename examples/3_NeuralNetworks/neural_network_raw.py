@@ -13,6 +13,14 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 
 from __future__ import print_function
 
+# Disable GPU (we focus on the CPU side simulation)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Import our simulation hooks.
+from ROI import roi_begin as roi_begin
+from ROI import roi_end as roi_end
+
 # Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
@@ -81,6 +89,7 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
+    roi_begin()
     for step in range(1, num_steps+1):
         batch_x, batch_y = mnist.train.next_batch(batch_size)
         # Run optimization op (backprop)
@@ -92,6 +101,7 @@ with tf.Session() as sess:
             print("Step " + str(step) + ", Minibatch Loss= " + \
                   "{:.4f}".format(loss) + ", Training Accuracy= " + \
                   "{:.3f}".format(acc))
+    roi_end()
 
     print("Optimization Finished!")
 

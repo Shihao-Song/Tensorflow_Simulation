@@ -13,6 +13,14 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 
 from __future__ import print_function
 
+# Disable GPU (we focus on the CPU side simulation)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Import our simulation hooks.
+from ROI import roi_begin as roi_begin
+from ROI import roi_end as roi_end
+
 import tensorflow as tf
 from tensorflow.contrib.boosted_trees.estimator_batch.estimator import GradientBoostedDecisionTreeClassifier
 from tensorflow.contrib.boosted_trees.proto import learner_pb2 as gbdt_learner
@@ -72,7 +80,10 @@ input_fn = tf.estimator.inputs.numpy_input_fn(
     x={'images': mnist.train.images}, y=mnist.train.labels,
     batch_size=batch_size, num_epochs=None, shuffle=True)
 # Train the Model
+# TODO, we need to do some more diggings here.
+roi_begin()
 gbdt_model.fit(input_fn=input_fn, max_steps=max_steps)
+roi_end()
 
 # Evaluate the Model
 # Define the input function for evaluating

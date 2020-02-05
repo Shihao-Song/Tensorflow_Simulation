@@ -10,6 +10,14 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 
 from __future__ import print_function
 
+# Disable GPU (we focus on the CPU side simulation)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Import our simulation hooks.
+from ROI import roi_begin as roi_begin
+from ROI import roi_end as roi_end
+
 import tensorflow as tf
 from tensorflow.contrib.tensor_forest.python import tensor_forest
 from tensorflow.python.ops import resources
@@ -62,6 +70,7 @@ sess = tf.Session()
 # Run the initializer
 sess.run(init_vars)
 
+roi_begin()
 # Training
 for i in range(1, num_steps + 1):
     # Prepare Data
@@ -71,6 +80,7 @@ for i in range(1, num_steps + 1):
     if i % 50 == 0 or i == 1:
         acc = sess.run(accuracy_op, feed_dict={X: batch_x, Y: batch_y})
         print('Step %i, Loss: %f, Acc: %f' % (i, l, acc))
+roi_end()
 
 # Test Model
 test_x, test_y = mnist.test.images, mnist.test.labels

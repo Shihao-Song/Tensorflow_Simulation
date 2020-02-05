@@ -14,6 +14,14 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 
 from __future__ import print_function
 
+# Disable GPU (we focus on the CPU side simulation)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Import our simulation hooks.
+from ROI import roi_begin as roi_begin
+from ROI import roi_end as roi_end
+
 import tensorflow as tf
 import random
 
@@ -169,6 +177,7 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
+    roi_begin()
     for step in range(1, training_steps + 1):
         batch_x, batch_y, batch_seqlen = trainset.next(batch_size)
         # Run optimization op (backprop)
@@ -181,7 +190,7 @@ with tf.Session() as sess:
             print("Step " + str(step*batch_size) + ", Minibatch Loss= " + \
                   "{:.6f}".format(loss) + ", Training Accuracy= " + \
                   "{:.5f}".format(acc))
-
+    roi_end()
     print("Optimization Finished!")
 
     # Calculate accuracy
