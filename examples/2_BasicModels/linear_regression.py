@@ -59,17 +59,17 @@ with tf.Session() as sess:
     sess.run(init)
 
     # Fit all training data
-    roi_begin()
     for epoch in range(training_epochs):
         for (x, y) in zip(train_X, train_Y):
+            roi_begin()
             sess.run(optimizer, feed_dict={X: x, Y: y})
+            roi_end()
 
         # Display logs per epoch step
         if (epoch+1) % display_step == 0:
             c = sess.run(cost, feed_dict={X: train_X, Y:train_Y})
             print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(c), \
                 "W=", sess.run(W), "b=", sess.run(b))
-    roi_end()
 
     print("Optimization Finished!")
     training_cost = sess.run(cost, feed_dict={X: train_X, Y: train_Y})

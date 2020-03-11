@@ -48,17 +48,17 @@ with tf.Session() as sess:
 
     # Run the initializer
     sess.run(init)
-    roi_begin()
     # loop over test data
     for i in range(len(Xte)):
         # Get nearest neighbor
+        roi_begin()
         nn_index = sess.run(pred, feed_dict={xtr: Xtr, xte: Xte[i, :]})
+        roi_end()
         # Get nearest neighbor class label and compare it to its true label
         print("Test", i, "Prediction:", np.argmax(Ytr[nn_index]), \
             "True Class:", np.argmax(Yte[i]))
         # Calculate accuracy
         if np.argmax(Ytr[nn_index]) == np.argmax(Yte[i]):
             accuracy += 1./len(Xte)
-    roi_end()
     print("Done!")
     print("Accuracy:", accuracy)

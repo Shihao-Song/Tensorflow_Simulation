@@ -177,12 +177,13 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
-    roi_begin()
     for step in range(1, training_steps + 1):
         batch_x, batch_y, batch_seqlen = trainset.next(batch_size)
+        roi_begin()
         # Run optimization op (backprop)
         sess.run(optimizer, feed_dict={x: batch_x, y: batch_y,
                                        seqlen: batch_seqlen})
+        roi_end()
         if step % display_step == 0 or step == 1:
             # Calculate batch accuracy & loss
             acc, loss = sess.run([accuracy, cost], feed_dict={x: batch_x, y: batch_y,
@@ -190,7 +191,6 @@ with tf.Session() as sess:
             print("Step " + str(step*batch_size) + ", Minibatch Loss= " + \
                   "{:.6f}".format(loss) + ", Training Accuracy= " + \
                   "{:.5f}".format(acc))
-    roi_end()
     print("Optimization Finished!")
 
     # Calculate accuracy

@@ -131,7 +131,6 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
-    roi_begin()
     for i in range(1, num_steps+1):
         # Prepare Data
         # Get the next batch of MNIST data (only images are needed, not labels)
@@ -140,12 +139,13 @@ with tf.Session() as sess:
         z = np.random.uniform(-1., 1., size=[batch_size, noise_dim])
 
         # Train
+        roi_begin()
         feed_dict = {disc_input: batch_x, gen_input: z}
         _, _, gl, dl = sess.run([train_gen, train_disc, gen_loss, disc_loss],
                                 feed_dict=feed_dict)
+        roi_end()
         if i % 1000 == 0 or i == 1:
             print('Step %i: Generator Loss: %f, Discriminator Loss: %f' % (i, gl, dl))
-    roi_end()
 
     # Generate images from noise, using the generator network.
     f, a = plt.subplots(4, 10, figsize=(10, 4))

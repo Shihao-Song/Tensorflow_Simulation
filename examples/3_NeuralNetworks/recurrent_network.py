@@ -99,13 +99,14 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
-    roi_begin()
     for step in range(1, training_steps+1):
         batch_x, batch_y = mnist.train.next_batch(batch_size)
         # Reshape data to get 28 seq of 28 elements
         batch_x = batch_x.reshape((batch_size, timesteps, num_input))
         # Run optimization op (backprop)
+        roi_begin()
         sess.run(train_op, feed_dict={X: batch_x, Y: batch_y})
+        roi_end()
         if step % display_step == 0 or step == 1:
             # Calculate batch loss and accuracy
             loss, acc = sess.run([loss_op, accuracy], feed_dict={X: batch_x,
@@ -113,7 +114,6 @@ with tf.Session() as sess:
             print("Step " + str(step) + ", Minibatch Loss= " + \
                   "{:.4f}".format(loss) + ", Training Accuracy= " + \
                   "{:.3f}".format(acc))
-    roi_end()
 
     print("Optimization Finished!")
 

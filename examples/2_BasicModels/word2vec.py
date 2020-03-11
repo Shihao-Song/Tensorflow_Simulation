@@ -176,12 +176,13 @@ with tf.Session() as sess:
     x_test = np.array([word2id[w.encode()] for w in eval_words])
 
     average_loss = 0
-    roi_begin()
     for step in range(1, num_steps + 1):
         # Get a new batch of data
         batch_x, batch_y = next_batch(batch_size, num_skips, skip_window)
         # Run training op
+        roi_begin()
         _, loss = sess.run([train_op, loss_op], feed_dict={X: batch_x, Y: batch_y})
+        roi_end()
         average_loss += loss
 
         if step % display_step == 0 or step == 1:
@@ -202,4 +203,3 @@ with tf.Session() as sess:
                 for k in range(top_k):
                     log_str = '%s %s,' % (log_str, id2word[nearest[k]])
                 print(log_str)
-    roi_end()

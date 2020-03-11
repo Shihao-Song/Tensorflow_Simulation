@@ -112,7 +112,6 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
-    roi_begin()
     for i in range(1, num_steps+1):
         # Prepare Data
         # Get the next batch of MNIST data (only images are needed, not labels)
@@ -120,10 +119,11 @@ with tf.Session() as sess:
 
         # Train
         feed_dict = {input_image: batch_x}
+        roi_begin()
         _, l = sess.run([train_op, loss_op], feed_dict=feed_dict)
+        roi_end()
         if i % 1000 == 0 or i == 1:
             print('Step %i, Loss: %f' % (i, l))
-    roi_end()
 
     # Testing
     # Generator takes noise as input

@@ -72,14 +72,14 @@ sess = tf.Session()
 sess.run(init_vars, feed_dict={X: full_data_x})
 sess.run(init_op, feed_dict={X: full_data_x})
 
-roi_begin()
 # Training
 for i in range(1, num_steps + 1):
+    roi_begin()
     _, d, idx = sess.run([train_op, avg_distance, cluster_idx],
                          feed_dict={X: full_data_x})
+    roi_end()
     if i % 10 == 0 or i == 1:
         print("Step %i, Avg Distance: %f" % (i, d))
-roi_end()
 
 # Assign a label to each centroid
 # Count total number of labels per centroid, using the label of each training

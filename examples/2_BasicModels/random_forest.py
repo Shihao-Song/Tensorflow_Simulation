@@ -70,17 +70,17 @@ sess = tf.Session()
 # Run the initializer
 sess.run(init_vars)
 
-roi_begin()
 # Training
 for i in range(1, num_steps + 1):
     # Prepare Data
     # Get the next batch of MNIST data (only images are needed, not labels)
     batch_x, batch_y = mnist.train.next_batch(batch_size)
+    roi_begin()
     _, l = sess.run([train_op, loss_op], feed_dict={X: batch_x, Y: batch_y})
+    roi_end()
     if i % 50 == 0 or i == 1:
         acc = sess.run(accuracy_op, feed_dict={X: batch_x, Y: batch_y})
         print('Step %i, Loss: %f, Acc: %f' % (i, l, acc))
-roi_end()
 
 # Test Model
 test_x, test_y = mnist.test.images, mnist.test.labels

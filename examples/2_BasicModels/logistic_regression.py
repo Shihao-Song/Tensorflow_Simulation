@@ -54,7 +54,6 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
-    roi_begin()
     # Training cycle
     for epoch in range(training_epochs):
         avg_cost = 0.
@@ -63,14 +62,15 @@ with tf.Session() as sess:
         for i in range(total_batch):
             batch_xs, batch_ys = mnist.train.next_batch(batch_size)
             # Run optimization op (backprop) and cost op (to get loss value)
+            roi_begin()
             _, c = sess.run([optimizer, cost], feed_dict={x: batch_xs,
                                                           y: batch_ys})
+            roi_end()
             # Compute average loss
             avg_cost += c / total_batch
         # Display logs per epoch step
         if (epoch+1) % display_step == 0:
             print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
-    roi_end()
 
     print("Optimization Finished!")
 

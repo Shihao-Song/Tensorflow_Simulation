@@ -133,7 +133,6 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
-    roi_begin()
     for i in range(1, num_steps+1):
 
         # Prepare Input Data
@@ -154,11 +153,12 @@ with tf.Session() as sess:
         # Training
         feed_dict = {real_image_input: batch_x, noise_input: z,
                      disc_target: batch_disc_y, gen_target: batch_gen_y}
+        roi_begin()
         _, _, gl, dl = sess.run([train_gen, train_disc, gen_loss, disc_loss],
                                 feed_dict=feed_dict)
+        roi_end()
         if i % 100 == 0 or i == 1:
             print('Step %i: Generator Loss: %f, Discriminator Loss: %f' % (i, gl, dl))
-    roi_end()
 
     # Generate images from noise, using the generator network.
     f, a = plt.subplots(4, 10, figsize=(10, 4))
