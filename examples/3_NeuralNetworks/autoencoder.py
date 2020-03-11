@@ -105,19 +105,22 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
-    roi_begin()
+    # roi_begin()
     # Training
     for i in range(1, num_steps+1):
         # Prepare Data
         # Get the next batch of MNIST data (only images are needed, not labels)
         batch_x, _ = mnist.train.next_batch(batch_size)
 
+        roi_begin()
         # Run optimization op (backprop) and cost op (to get loss value)
         _, l = sess.run([optimizer, loss], feed_dict={X: batch_x})
+        roi_end()
+
         # Display logs per step
         if i % display_step == 0 or i == 1:
             print('Step %i: Minibatch Loss: %f' % (i, l))
-    roi_end()
+    # roi_end()
 
     # Testing
     # Encode and decode images from test set and visualize their reconstruction.
